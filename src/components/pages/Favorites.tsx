@@ -10,9 +10,11 @@ import { useAuth } from "../store/authentication/useAuth";
 
 //INFO UI
 import Pagination from "../ui/Pagination";
-
-//INFO Modals
 import DeletionConfirmation from "../ui/modals/DeletionConfirmation";
+
+//INFO Toasts
+import { showToast } from "../ui/toasts/ShowToast";
+import { resetToast } from "../ui/toasts/ResetToast";
 
 interface Dog {
   id: string;
@@ -56,6 +58,9 @@ export default function Favorites() {
         prev.filter((dog) => dog.id !== selectedDog.id)
       );
     }
+    showToast("Dog removed from favorites", "success");
+    resetToast();
+
     setModalOpen(false);
     setSelectedDog(null);
   };

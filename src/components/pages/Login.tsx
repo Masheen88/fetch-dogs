@@ -8,6 +8,10 @@ import { login } from "../services/authService";
 //INFO Images
 import fetchLogo from "../../assets/fetch.svg";
 
+//INFO Toasts
+import { showToast } from "../ui/toasts/ShowToast";
+import { resetToast } from "../ui/toasts/ResetToast";
+
 export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,14 +20,28 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
+      //   showToast("Logging in...", "info");
+
+      //   if (!name || !email) {
+      //     showToast("Please fill in all fields", "error");
+      //     resetToast();
+      //     return;
+      //   }
+
       const loginResponse = await login(name, email);
       setUser(name, email);
 
       console.log("Login successful", loginResponse);
 
+      showToast("Login successful", "success");
+
       navigate("/search");
     } catch (error) {
+      showToast("Login failed", "error");
+      resetToast();
       console.error("Login failed", error);
+    } finally {
+      resetToast();
     }
   };
 

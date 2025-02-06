@@ -6,6 +6,7 @@ interface FavoritesContextType {
   removeFavorite: (id: string) => void;
 }
 
+// Creates a globally accessible context for favorites
 export const FavoritesContext = createContext<FavoritesContextType | undefined>(
   undefined
 );

@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (userName: string, userEmail: string) => {
     try {
+      //API - Post request to log the user into the sysstem
       await api.post("/auth/login", { name: userName, email: userEmail });
       setName(userName);
       setEmail(userEmail);
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  //Logs the user out of the session
   const logout = async () => {
     try {
       await api.post("/auth/logout"); // Invalidate session
@@ -44,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  ///Memoization the user data to prevent unnecessary re-renders
   const value = useMemo(
     () => ({ name, email, isAuthenticated, login, logout }),
     [name, email, isAuthenticated]

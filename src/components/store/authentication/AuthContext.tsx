@@ -9,6 +9,7 @@ interface AuthContextType {
   logout: () => void;
 }
 
+// Creates a globally accessible context for authentication
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
