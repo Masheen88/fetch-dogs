@@ -2,7 +2,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2022",
-    "lib": ["ES2023"],
+    "lib": ["ES2022"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -18,7 +18,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "paths": {
+    "@components/*": ["src/components/*"],
+    "@pages/*": ["src/components/pages/*"],
+    "@services/*": ["src/components/services/*"],
+    "@store/*": ["src/components/store/*"],
+    "@hooks/*": ["src/components/hooks/*"],
+    "@utils/*": ["src/components/utils/*"]
   },
   "include": ["vite.config.ts"]
 }
