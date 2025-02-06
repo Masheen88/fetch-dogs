@@ -1,22 +1,61 @@
 import { api } from "./api";
 
-export const getBreeds = async () => {
+interface Dog {
+  id: string;
+  img: string;
+  name: string;
+  age: number;
+  zip_code: string;
+  breed: string;
+}
+
+interface SearchResponse {
+  resultIds: string[];
+  total: number;
+  next?: string;
+  prev?: string;
+}
+
+interface Match {
+  match: string;
+}
+
+export const getBreeds = async (): Promise<string[]> => {
   const { data } = await api.get<string[]>("/dogs/breeds");
   return data;
 };
 
-export const searchDogs = async (filters: Record<string, any>) => {
-  const params = new URLSearchParams(filters).toString();
-  const { data } = await api.get(`/dogs/search?${params}`);
+interface SearchFilters {
+  sort: string;
+  size: number;
+  from: number;
+  breeds?: string[];
+}
+
+export const searchDogs = async (
+  filters: SearchFilters
+): Promise<SearchResponse> => {
+  const params = new URLSearchParams(
+    Object.entries(filters).reduce((acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key] = value.join(","); // Convert array to a comma-separated string
+      } else {
+        acc[key] = String(value);
+      }
+      return acc;
+    }, {} as Record<string, string>)
+  ).toString();
+
+  const { data } = await api.get<SearchResponse>(`/dogs/search?${params}`);
   return data;
 };
 
-export const getDogsByIds = async (dogIds: string[]) => {
-  const { data } = await api.post("/dogs", dogIds);
+export const getDogsByIds = async (dogIds: string[]): Promise<Dog[]> => {
+  const { data } = await api.post<Dog[]>("/dogs", dogIds);
   return data;
 };
 
-export const getMatch = async (dogIds: string[]) => {
-  const { data } = await api.post("/dogs/match", dogIds);
+export const getMatch = async (dogIds: string[]): Promise<string> => {
+  const { data } = await api.post<Match>("/dogs/match", dogIds);
   return data.match;
 };

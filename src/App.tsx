@@ -11,7 +11,7 @@ import Login from "./components/pages/Login";
 import SearchDogs from "./components/pages/SearchDogs";
 import Favorites from "./components/pages/Favorites";
 
-function PrivateRoute({ children }: { children: JSX.Element }) {
+function PrivateRoute({ children }: { children: React.ReactElement }) {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to="/" />;
 }

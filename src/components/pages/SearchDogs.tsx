@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getBreeds, searchDogs, getDogsByIds } from "../services/dogServer";
 import { useFavorites } from "../store/favorites/useFavorites";
+import Pagination from "../ui/Pagination";
 
 interface Dog {
   id: string;
@@ -17,6 +18,7 @@ export default function SearchDogs() {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1); // Keep track of total pages
   const { addFavorite } = useFavorites();
 
   useEffect(() => {
@@ -30,14 +32,16 @@ export default function SearchDogs() {
   useEffect(() => {
     async function fetchDogs() {
       const query = {
-        breeds: selectedBreed ? [selectedBreed] : [],
+        ...(selectedBreed ? { breeds: [selectedBreed] } : {}),
         sort: `breed:${sortOrder}`,
         size: 10,
         from: page * 10,
       };
+
       const result = await searchDogs(query);
       const dogDetails = await getDogsByIds(result.resultIds);
       setDogs(dogDetails);
+      setTotalPages(Math.ceil(result.total / 10)); // Calculate total pages
     }
     fetchDogs();
   }, [selectedBreed, sortOrder, page]);
@@ -93,21 +97,7 @@ export default function SearchDogs() {
       </div>
 
       {/* Pagination */}
-      <div className="mt-4">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-          className="p-2 border mr-2"
-          disabled={page === 0}
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => setPage((prev) => prev + 1)}
-          className="p-2 border"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination page={page} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 }
