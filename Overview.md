@@ -2,6 +2,8 @@
 
 # Tailwind CSS for styling, custom css if necessary
 
+    -tailwind-motion for additional animations
+
 # Axios for API requests
 
 # React Router for navigation
@@ -16,12 +18,25 @@
 - Users should be able to modify this sort to be ascending or descending.
 - All fields of the Dog object (except for id) must be presented in some form
 
+- Login and Logout of the app
+- Allows for searching of dogs by breed and adding favorites
+- Allows for viewing/removing favorites
+
 # Components
 
+- Pages
+  - Login
+  - Search Dogs
+  - Favorites
+- Services
+  - api
+  - authentication service
+  - dog service
+- Store
+  - authentication
+  - favorites
 - UI
   - buttons
-  - toasts
-
-# Services
-
-- API
+  - modals
+  - toasts (coming soon)
+  - Pagination
