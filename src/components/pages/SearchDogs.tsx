@@ -87,10 +87,10 @@ export default function SearchDogs() {
         from: page * 10,
       };
 
-      const result = await searchDogs(query);
+      const result = await searchDogs(query); //waits for the dog results to return
       console.log("result:", result);
 
-      const dogDetails = await getDogsByIds(result.resultIds);
+      const dogDetails = await getDogsByIds(result.resultIds); //waits for the dog details by  to return
       console.log("dogDetails:", dogDetails);
 
       setDogs(dogDetails);

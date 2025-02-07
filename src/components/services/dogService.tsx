@@ -20,6 +20,7 @@ interface Match {
   match: string;
 }
 
+//API - GET Retries all breeds
 export const getBreeds = async (): Promise<string[]> => {
   const { data } = await api.get<string[]>("/dogs/breeds");
   return data;
@@ -50,11 +51,13 @@ export const searchDogs = async (
   return data;
 };
 
+//API - POST Returns dogs based on ids passed in
 export const getDogsByIds = async (dogIds: string[]): Promise<Dog[]> => {
   const { data } = await api.post<Dog[]>("/dogs", dogIds);
   return data;
 };
 
+//API - POST Returns a match based on the dog ids passed in
 export const getMatch = async (dogIds: string[]): Promise<string> => {
   const { data } = await api.post<Match>("/dogs/match", dogIds);
   return data.match;
