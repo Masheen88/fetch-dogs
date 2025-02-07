@@ -20,14 +20,6 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      //   showToast("Logging in...", "info");
-
-      //   if (!name || !email) {
-      //     showToast("Please fill in all fields", "error");
-      //     resetToast();
-      //     return;
-      //   }
-
       const loginResponse = await login(name, email);
       setUser(name, email);
 

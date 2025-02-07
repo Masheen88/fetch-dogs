@@ -7,6 +7,7 @@ interface DeletionConfirmationProps {
   dogName: string;
 }
 
+//Modal for confirmation of deleeting a dog from favorites
 const DeletionConfirmation: React.FC<DeletionConfirmationProps> = ({
   isOpen,
   onClose,

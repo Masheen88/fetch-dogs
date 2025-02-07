@@ -27,16 +27,17 @@ interface Dog {
 
 export default function Favorites() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
-  const { favorites, removeFavorite } = useFavorites();
-  const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]);
-  const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
+  const { logout } = useAuth(); //log out of the session
+  const { favorites, removeFavorite } = useFavorites(); //remove the dog from the favorites list
+  const [favoriteDogs, setFavoriteDogs] = useState<Dog[]>([]); //array of favorte dogs
+  const [matchedDog, setMatchedDog] = useState<Dog | null>(null); //matched dog
+  const [page, setPage] = useState(0); //current page
+  const [totalPages, setTotalPages] = useState(1); //total pages
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDog, setSelectedDog] = useState<Dog | null>(null);
 
+  // Match a dog from favorites
   const handleMatch = async () => {
     if (favorites.length === 0) return;
     const matchedId = await getMatch(favorites);
@@ -53,7 +54,10 @@ export default function Favorites() {
   // Remove the selected dog
   const handleRemove = () => {
     if (selectedDog) {
+      //remove the dog from the favorites list
       removeFavorite(selectedDog.id);
+
+      // Remove dog from the displayed list
       setFavoriteDogs((prev) =>
         prev.filter((dog) => dog.id !== selectedDog.id)
       );
@@ -81,12 +85,13 @@ export default function Favorites() {
   useEffect(() => {
     async function fetchFavoriteDogs() {
       if (favorites.length > 0) {
+        //skip getting dogs if there are no favorites
         const dogs = await getDogsByIds(favorites);
         setFavoriteDogs(dogs);
-        setTotalPages(Math.ceil(dogs.length / 10));
+        setTotalPages(Math.ceil(dogs.length / 10)); // Calculates total pages
       }
     }
-    fetchFavoriteDogs();
+    fetchFavoriteDogs(); //fetch the dogs only if there are favorites
   }, [favorites]);
 
   return (

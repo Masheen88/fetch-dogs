@@ -4,6 +4,7 @@ interface PaginationProps {
   readonly totalPages: number;
 }
 
+//Allows pages to display previous, next, currenct/total pages.
 export default function Pagination({
   page,
   setPage,

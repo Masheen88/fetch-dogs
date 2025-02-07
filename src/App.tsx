@@ -31,7 +31,10 @@ export default function App() {
 
         <Router>
           <Routes>
+            {/* Login ie. 'Home' */}
             <Route path="/" element={<Login />} />
+
+            {/* Search Dogs */}
             <Route
               path="/search"
               element={
@@ -40,6 +43,8 @@ export default function App() {
                 </PrivateRoute>
               }
             />
+
+            {/* Favorites */}
             <Route
               path="/favorites"
               element={
