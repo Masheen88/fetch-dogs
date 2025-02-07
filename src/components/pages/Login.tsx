@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //INFO Auth
@@ -15,10 +15,12 @@ import { resetToast } from "../ui/toasts/ResetToast";
 export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const { login: setUser } = useAuth();
+  const { login: setUser, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     try {
       const loginResponse = await login(name, email);
       setUser(name, email);
@@ -26,8 +28,6 @@ export default function Login() {
       console.log("Login successful", loginResponse);
 
       showToast("Login successful", "success");
-
-      navigate("/search");
     } catch (error) {
       showToast("Login failed", "error");
       resetToast();
@@ -36,6 +36,12 @@ export default function Login() {
       resetToast();
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/search");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300 p-6">
@@ -63,12 +69,14 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-500 text-white font-semibold p-2 rounded hover:bg-blue-600 transition"
-        >
-          Login
-        </button>
+        <form onSubmit={handleLogin} className="w-full">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white font-semibold p-2 rounded hover:bg-blue-600 transition"
+          >
+            Login
+          </button>
+        </form>
       </div>
     </div>
   );

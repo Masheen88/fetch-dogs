@@ -1,5 +1,6 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router, //compatibility with GH Pages
+  // BrowserRouter as Router,
   Routes,
   Route,
   Navigate,

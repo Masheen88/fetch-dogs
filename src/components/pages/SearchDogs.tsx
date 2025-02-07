@@ -13,6 +13,9 @@ import { useAuth } from "../store/authentication/useAuth";
 //INFO UI
 import Pagination from "../ui/Pagination";
 
+//INFO Images
+import fetchLogoNoBg from "../../assets/fetch_nobg.png";
+
 interface Dog {
   id: string;
   img: string;
@@ -24,14 +27,14 @@ interface Dog {
 
 export default function SearchDogs() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
   const [breeds, setBreeds] = useState<string[]>([]);
   const [selectedBreed, setSelectedBreed] = useState("");
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1); // Keep track of total pages
-  const { addFavorite } = useFavorites();
+  const { favorites, addFavorite } = useFavorites();
 
   //adds the dog to the favorites list and animates the button
   const handleAddFavorite = (id: string) => {
@@ -64,12 +67,16 @@ export default function SearchDogs() {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+
     async function fetchBreeds() {
       const breedList = await getBreeds();
       setBreeds(breedList);
     }
     fetchBreeds();
-  }, []);
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     async function fetchDogs() {
@@ -104,9 +111,15 @@ export default function SearchDogs() {
           <button
             type="button"
             onClick={() => navigate("/favorites")}
-            className="px-4 py-2 bg-amber-500 text-white rounded hover:bg-amber-400 duration-200 transition"
+            className="px-4 py-0 bg-amber-500 text-white rounded hover:bg-amber-400 duration-200 transition"
           >
-            View Favorites
+            View Favorites{" "}
+            <img
+              src={fetchLogoNoBg}
+              alt="Fetch Logo"
+              className="h-12 w-12 inline-block"
+            />
+            {favorites.length}
           </button>
 
           {/* Logout Button */}
